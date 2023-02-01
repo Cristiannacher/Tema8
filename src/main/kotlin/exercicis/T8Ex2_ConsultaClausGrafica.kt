@@ -65,14 +65,14 @@ class EstadisticaRD : JFrame() {
 
         when (con.type(c.elementAt(indice))) {
             "string" -> {
-                contClau.text = ("${c.elementAt(indice)}:${con.get(c.elementAt(indice))}")
+                contClau.text = ("${c.elementAt(indice)}: \n ${con.get(c.elementAt(indice))}")
             }
 
             "list" -> {
                 val ll = con.lrange(c.elementAt(indice ), 0, -1)
                 var text= ""
                 for (e in ll)
-                    text += "e \n"
+                    text += "$e \n"
                 contClau.text = text
             }
 
@@ -80,7 +80,7 @@ class EstadisticaRD : JFrame() {
                 val s = con.smembers(c.elementAt(indice))  // s és un MutableSet
                 var text= ""
                 for (e in s)
-                    text += "e \n"
+                    text += "$e \n"
                 contClau.text = text
             }
 
@@ -88,14 +88,17 @@ class EstadisticaRD : JFrame() {
                 val subcamps = con.hkeys(c.elementAt(indice))
                 var text = ""
                 for (subcamp in subcamps)
-                    text += "$subcamp --> ${con.hget(c.elementAt(indice),subcamp)}"
+                    text += "$subcamp --> ${con.hget(c.elementAt(indice),subcamp)}\n"
+                contClau.text = text
 
             }
 
             "zset" -> {
                 val conjOrd = con.zrangeWithScores(c.elementAt(indice), 0, -1)
+                var text = ""
                 for (t in conjOrd)
-                    contClau.append(t.getElement() + " ---> " + t.getScore())
+                    text += t.getElement() + " ---> " + t.getScore() + "\n"
+                contClau.text = text
             }
         }
     }
